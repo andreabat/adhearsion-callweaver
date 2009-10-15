@@ -271,7 +271,7 @@ module Adhearsion
       module Coercions
 
         COERCION_ORDER = %w{
-          remove_agi_prefixes_from_keys_and_strip_whitespace
+          remove_ogi_prefixes_from_keys_and_strip_whitespace
           coerce_keys_into_symbols
           coerce_extension_into_phone_number_object
           coerce_numerical_values_to_numerics
@@ -290,6 +290,15 @@ module Adhearsion
             variables.inject({}) do |new_variables,(key,value)|
               returning new_variables do
                 stripped_name = key.kind_of?(String) ? key[/^(agi_)?(.+)$/,2] : key
+                new_variables[stripped_name] = value.kind_of?(String) ? value.strip : value
+              end
+            end
+          end
+
+	 def remove_ogi_prefixes_from_keys_and_strip_whitespace(variables)
+            variables.inject({}) do |new_variables,(key,value)|
+              returning new_variables do
+                stripped_name = key.kind_of?(String) ? key[/^(ogi_)?(.+)$/,2] : key
                 new_variables[stripped_name] = value.kind_of?(String) ? value.strip : value
               end
             end

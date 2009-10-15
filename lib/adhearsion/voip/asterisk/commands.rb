@@ -180,9 +180,27 @@ module Adhearsion
           not @call.inbox.empty?
         end
 
-        # Menu creates an interactive menu for the caller.
+#####################TOPC&S
+# Aggiunte per comodità al sistema
+####################
+	def jump_to_dialplan(name)
+		execute(:Goto,"#{name},s,1")
+		
+	end
+	def jump_to_queue(name)
+		execute(:Queue,name)
+	end
+	def play_alpha(argument)
+		   execute(:SayAlpha, argument)
+	end
+######################################
+	
+
+        # = Menu Command
         #
-        # The following documentation was derived from a post on Jay Phillips' blog (see below).
+        # The following documentation was derived from this blog post on Jay Phillips' blog:
+        # 
+        # http://jicksta.com/articles/2008/02/11/menu-command
         # 
         # The menu() command solves the problem of building enormous input-fetching state machines in Ruby without first-class
         # message passing facilities or an external DSL.
@@ -731,7 +749,7 @@ module Adhearsion
       	
       	# Speaks the digits given as an argument. For example, "123" is spoken as "one two three".
       	def say_digits(digits)
-      	  execute "saydigits", validate_digits(digits)
+      	  execute "SayDigits", validate_digits(digits)
       	end
       	
       	# Returns the number of seconds the given block takes to execute as a Float. This
@@ -751,7 +769,7 @@ module Adhearsion
         #
         def interruptible_play(*files)
           files.flatten.each do |file|
-            result = result_digit_from raw_response("EXEC BACKGROUND #{file}")
+            result = result_digit_from raw_response("EXEC Background #{file}")
             return result if result != 0.chr
           end
           nil
@@ -864,18 +882,18 @@ module Adhearsion
 
           def play_time(argument)
             if argument.kind_of? Time
-              execute(:sayunixtime, argument.to_i)
+              execute(:SayUnixTime, argument.to_i)
             end
           end
         
           def play_numeric(argument)
             if argument.kind_of?(Numeric) || argument =~ /^\d+$/
-              execute(:saynumber, argument)
+              execute(:SayNumber, argument)
             end
           end
           
           def play_string(argument)
-            execute(:playback, argument)
+            execute(:Playback, argument)
           end
 
           def play_sound_files_for_menu(menu_instance, sound_files)
