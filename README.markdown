@@ -1,3 +1,10 @@
+Callweaver
+=====================
+I've added preliminary callweaver support, tested with 1.2 SVN -7301.
+As of now it breaks  AGI/Asterisk support, will fix and clean up soon to have both PBX working.
+
+
+
 Adhearsion
 ==========
 
