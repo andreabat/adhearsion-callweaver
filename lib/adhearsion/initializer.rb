@@ -262,14 +262,17 @@ Adhearsion will abort until you fix this. Sorry for the incovenience.
     def init_modules
       require 'adhearsion/initializer/database.rb'
       require 'adhearsion/initializer/asterisk.rb'
+      require 'adhearsion/initializer/callweaver.rb'
       require 'adhearsion/initializer/drb.rb'
       require 'adhearsion/initializer/rails.rb'
       # require 'adhearsion/initializer/freeswitch.rb'
       
       DatabaseInitializer.start if AHN_CONFIG.database_enabled?
       AsteriskInitializer.start if AHN_CONFIG.asterisk_enabled?
+      CallweaverInitializer.start if AHN_CONFIG.callweaver_enabled?
       DrbInitializer.start      if AHN_CONFIG.drb_enabled?
       RailsInitializer.start    if AHN_CONFIG.rails_enabled?
+      
       # FreeswitchInitializer.start if AHN_CONFIG.freeswitch_enabled?
     end
     

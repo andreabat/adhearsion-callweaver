@@ -49,6 +49,7 @@ ADHEARSION_FILES = %w{
   lib/adhearsion/host_definitions.rb
   lib/adhearsion/initializer.rb
   lib/adhearsion/initializer/asterisk.rb
+  lib/adhearsion/initializer/callweaver.rb
   lib/adhearsion/initializer/configuration.rb
   lib/adhearsion/initializer/database.rb
   lib/adhearsion/initializer/drb.rb
@@ -77,6 +78,8 @@ ADHEARSION_FILES = %w{
   lib/adhearsion/voip/asterisk/manager_interface/ami_protocol_lexer_machine.rl
   lib/adhearsion/voip/asterisk/special_dial_plan_managers.rb
   lib/adhearsion/voip/asterisk/super_manager.rb
+  lib/adhearsion/voip/callweaver.rb
+  lib/adhearsion/voip/callweaver/manager_interface.rb
   lib/adhearsion/voip/call.rb
   lib/adhearsion/voip/call_routing.rb
   lib/adhearsion/voip/commands.rb

@@ -8,6 +8,7 @@ module Adhearsion
   
     def receive_call_from(io, &block)
       active_calls << (call = Call.receive_from(io, &block))
+     
       call
     end
     
@@ -140,6 +141,8 @@ module Adhearsion
       # creates a Call instance which encapsulates everything we know about that call.
       def receive_from(io, &block)
         returning new(io, variable_parser_for(io).variables) do |call|
+        p "IN CALL"
+        p block
           block.call(call) if block
         end
       end
@@ -226,6 +229,8 @@ module Adhearsion
       case originating_voip_platform
         when :asterisk
           variables[:channel] || variables[:uniqueid] || object_id
+        when :callweaver
+          variables[:channel] || variables[:uniqueid] || object_id
         else
           raise NotImplementedError
       end
@@ -238,7 +243,7 @@ module Adhearsion
     end
     
     def extract_failed_reason_from(environment)
-      if originating_voip_platform == :asterisk
+      if originating_voip_platform == :asterisk || originating_voip_platform == :callweaver
         failed_reason = environment.variable 'REASON'
         failed_reason &&= ASTERISK_FRAME_STATES[failed_reason.to_i]
         define_singleton_accessor_with_pair(:failed_reason, failed_reason, environment)
@@ -259,11 +264,11 @@ module Adhearsion
         raise UselessCallException if extension == 't' # TODO: Move this whole method to Manager
       end
     
-      def set_originating_voip_platform!
+      def set_originating_voip_platform! platform=:asterisk
         # TODO: we can make this determination programatically at some point,
         # but it will probably involve a bit more engineering than just a case statement (like
         # subclasses of Call for the various platforms), so we'll be totally cheap for now.
-        self.originating_voip_platform = :asterisk
+        self.originating_voip_platform = platform
       end
     
     module Variables
@@ -271,6 +276,7 @@ module Adhearsion
       module Coercions
 
         COERCION_ORDER = %w{
+          remove_agi_prefixes_from_keys_and_strip_whitespace
           remove_ogi_prefixes_from_keys_and_strip_whitespace
           coerce_keys_into_symbols
           coerce_extension_into_phone_number_object
@@ -450,6 +456,7 @@ module Adhearsion
           
           def extract_variable_lines_from_io
             while line = io.readline.chomp
+            p line
               break if line.empty?
               @lines << line
             end

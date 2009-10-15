@@ -15,15 +15,19 @@ require 'adhearsion/foundation/all'
 require 'adhearsion/events_support'
 require 'adhearsion/logging'
 require 'adhearsion/component_manager'
+require 'adhearsion/initializer/callweaver'
 require 'adhearsion/initializer/configuration'
 require 'adhearsion/initializer'
+
 require 'adhearsion/voip/dsl/numerical_string'
 require 'adhearsion/voip/dsl/dialplan/parser'
 require 'adhearsion/voip/commands'
 require 'adhearsion/voip/asterisk/commands'
+
 require 'adhearsion/voip/dsl/dialing_dsl'
 require 'adhearsion/voip/call_routing'
-
+require 'adhearsion/voip/callweaver'
+require 'adhearsion/voip/callweaver/commands'
 module Adhearsion
   # Sets up the Gem require path.
   AHN_INSTALL_DIR = File.expand_path(File.dirname(__FILE__) + "/..")

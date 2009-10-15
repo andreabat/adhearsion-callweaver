@@ -4,7 +4,7 @@ module Adhearsion
       def add_configuration_for(name)
         configuration_class_name = "#{name}Configuration"
         lowercased_name          = name.to_s.underscore
-
+p"?? #{lowercased_name}"
         class_eval(<<-EVAL, __FILE__, __LINE__)
           def enable_#{lowercased_name}(configuration_options = {})
             @#{lowercased_name}_configuration = #{configuration_class_name}.new(configuration_options)
@@ -144,6 +144,18 @@ module Adhearsion
         end
       end
       
+      
+      end
+ class CallweaverConfiguration <  TelephonyPlatformConfiguration
+      class << self
+        attr_accessor :speech_engine
+        
+        def default_listening_port
+          4573
+        end
+      end
+
+	      
       class AMIConfiguration < AbstractConfiguration
         attr_accessor :port, :username, :password, :events, :host
         
@@ -171,6 +183,8 @@ module Adhearsion
       add_configuration_for :AMI
     end
     add_configuration_for :Asterisk
+    add_configuration_for :Callweaver
+     
     
     class FreeswitchConfiguration < TelephonyPlatformConfiguration
       class << self

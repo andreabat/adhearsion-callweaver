@@ -6,13 +6,19 @@ module Adhearsion
         class Server
           
           class RubyServer < GServer
-            
-            def initialize(port, host)
+             
+            def initialize(port, host,platform)
+              @platform=platform
               super(port, host, (1.0/0.0)) # (1.0/0.0) == Infinity
             end
             
             def serve(io)
-              call = Adhearsion.receive_call_from(io)
+              call = Adhearsion.receive_call_from io do |c| 
+			     			p "IM IN "
+	      		 c.originating_voip_platform= @platform
+			    p c 		 
+			      		 
+    		end
               Events.trigger_immediately([:asterisk, :before_call], call)
           	  ahn_log.agi "Handling call with variables #{call.variables.inspect}"
           	  
@@ -56,13 +62,15 @@ module Adhearsion
             
           end
          
-          DEFAULT_OPTIONS = { :server_class => RubyServer, :port => 4573, :host => "0.0.0.0" } unless defined? DEFAULT_OPTIONS
-          attr_reader :host, :port, :server_class, :server
+          DEFAULT_OPTIONS = { :server_class => RubyServer, :port => 4573, :host => "0.0.0.0",:platform=>:asterisk } unless defined? DEFAULT_OPTIONS
+          attr_reader :host, :port, :server_class, :server,:platform
 
           def initialize(options = {})
             options                     = DEFAULT_OPTIONS.merge options
-            @host, @port, @server_class = options.values_at(:host, :port, :server_class)
-            @server                     = server_class.new(port, host)
+            
+            @host, @port, @server_class,@platform = options.values_at(:host, :port, :server_class,:platform)
+            @server                     = server_class.new(port, host,platform)
+            
           end
 
           def start

@@ -394,6 +394,7 @@ module Adhearsion
       	# because there'd be no other way to end the collection of digits. You can
       	# obviously override this by passing in a new key with :accept_key.
         def input(*args)
+                ahn_log.info("ALLINTERNO DI AS")
           options = args.last.kind_of?(Hash) ? args.pop : {}
           number_of_digits = args.shift
           
