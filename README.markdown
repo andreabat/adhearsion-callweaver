@@ -1,8 +1,12 @@
 Callweaver
 =====================
 I've added preliminary callweaver support, tested with 1.2 SVN -7301.
-As of now it breaks  AGI/Asterisk support, will fix and clean up soon to have both PBX working.
-
+AGI and OGI now co-exist, as I've added CallWeaver specific classes.
+Many of these classes inherit form the Asterisk ones. Changed command casing,
+and the possibility to specifiy the orginating platform from the Server class.
+to use specify enable_callweaver in startup.rb of an ahn application.
+Config same as Asterisk.
+Hope this is useful.
 
 
 Adhearsion
